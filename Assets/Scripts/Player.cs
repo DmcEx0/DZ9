@@ -4,24 +4,21 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Slider _slider;
-
-    private float _healthPoint;
+    public float HealthPoint { get; private set; }
     private Coroutine _changeValue;
 
     private void Start()
     {
-        _healthPoint = Random.Range(0, 100);
+        HealthPoint = Random.Range(0, 100);
     }
 
     private IEnumerator ChangeValue(float targetValue)
     {
-        float targetHp = _healthPoint + targetValue;
+        float targetHp = HealthPoint + targetValue;
 
         while (true)
         {
-            _healthPoint = Mathf.MoveTowards(_healthPoint, targetHp, 10 * Time.deltaTime);
-            _slider.value = _healthPoint;
+            HealthPoint = Mathf.MoveTowards(HealthPoint, targetHp, 10 * Time.deltaTime);
 
             yield return null;
         }
@@ -32,7 +29,7 @@ public class Player : MonoBehaviour
         float value = 10;
         int maxHealthPoint = 100;
 
-        if (_healthPoint <= maxHealthPoint)
+        if (HealthPoint <= maxHealthPoint)
         {
             if (_changeValue != null)
                 StopCoroutine(_changeValue);
@@ -45,7 +42,7 @@ public class Player : MonoBehaviour
         float value = -10;
         int minHealthPoint = 0;
 
-        if (_healthPoint >= minHealthPoint)
+        if (HealthPoint >= minHealthPoint)
         {
             if (_changeValue != null)
                 StopCoroutine(_changeValue);

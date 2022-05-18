@@ -1,52 +1,32 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    private int _minHealthPoint = 0;
+    private int _maxHealthPoint = 100;
     public float HealthPoint { get; private set; }
-    private Coroutine _changeValue;
 
-    private void Start()
+    private void Awake()
     {
-        HealthPoint = Random.Range(0, 100);
+        HealthPoint = Random.Range(_minHealthPoint, _maxHealthPoint);
     }
 
-    private IEnumerator ChangeValue(float targetValue)
+    private void ChangeHealth(float targetValue)
     {
-        float targetHp = HealthPoint + targetValue;
-
-        while (true)
-        {
-            HealthPoint = Mathf.MoveTowards(HealthPoint, targetHp, 10 * Time.deltaTime);
-
-            yield return null;
-        }
+        HealthPoint += targetValue;
     }
 
     public void Heal()
     {
         float value = 10;
-        int maxHealthPoint = 100;
-
-        if (HealthPoint <= maxHealthPoint)
-        {
-            if (_changeValue != null)
-                StopCoroutine(_changeValue);
-            _changeValue = StartCoroutine(ChangeValue(value));
-        }
+        if (HealthPoint < _maxHealthPoint)
+            ChangeHealth(value);
     }
 
     public void Damage()
     {
         float value = -10;
-        int minHealthPoint = 0;
-
-        if (HealthPoint >= minHealthPoint)
-        {
-            if (_changeValue != null)
-                StopCoroutine(_changeValue);
-            _changeValue = StartCoroutine(ChangeValue(value));
-        }
+        if (HealthPoint > _minHealthPoint)
+            ChangeHealth(value);
     }
 }

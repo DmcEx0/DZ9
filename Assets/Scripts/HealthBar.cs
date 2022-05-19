@@ -21,7 +21,7 @@ public class HealthBar : MonoBehaviour
 
     private void OnChangeHealth(int value)
     {
-        if(_changeValue != null)
+        if (_changeValue != null)
             StopCoroutine(_changeValue);
         _changeValue = StartCoroutine(ChangeHealth(value));
     }
@@ -32,7 +32,7 @@ public class HealthBar : MonoBehaviour
 
         while (_slider.value != (float)value)
         {
-            _slider.value = Mathf.MoveTowards(_slider.value, value/100f, maxDelta * Time.deltaTime);
+            _slider.value = Mathf.MoveTowards(_slider.value, value / 100f, maxDelta * Time.deltaTime);
 
             yield return null;
         }

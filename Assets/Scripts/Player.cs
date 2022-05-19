@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private int _maxHealth = 100;
     private int _healthPoint;
 
-    public UnityAction<int>  ChangeHealth;
+    public UnityAction<int> ChangeHealth;
 
 
     private void OnEnable()
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
 
     public void Heal()
     {
-        _healthPoint = Mathf.Clamp(_healthPoint+_value, _minHealth, _maxHealth);
+        _healthPoint = Mathf.Clamp(_healthPoint + _value, _minHealth, _maxHealth);
         ChangeHealth?.Invoke(_healthPoint);
     }
 

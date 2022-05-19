@@ -4,32 +4,37 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private Slider _healthBarSlider;
     [SerializeField] private Player _player;
+    [SerializeField] private Slider _slider;
 
     private Coroutine _changeValue;
 
-    private void Start()
+    private void OnEnable()
     {
-        _healthBarSlider.value = _player.HealthPoint;
+        _player.ChangeHealth += OnChangeHealth;
     }
 
-    private IEnumerator ChangeHealth()
+    private void OnDisable()
     {
-        float maxDelta = 200f;
+        _player.ChangeHealth -= OnChangeHealth;
+    }
 
-        while (true)
+    private void OnChangeHealth(int value)
+    {
+        if(_changeValue != null)
+            StopCoroutine(_changeValue);
+        _changeValue = StartCoroutine(ChangeHealth(value));
+    }
+
+    private IEnumerator ChangeHealth(int value)
+    {
+        float maxDelta = 2f;
+
+        while (_slider.value != (float)value)
         {
-            _healthBarSlider.value = Mathf.MoveTowards(_healthBarSlider.value, _player.HealthPoint, maxDelta * Time.deltaTime);
+            _slider.value = Mathf.MoveTowards(_slider.value, value/100f, maxDelta * Time.deltaTime);
 
             yield return null;
         }
-    }
-
-    public void OnButtonClick()
-    {
-        if (_changeValue != null)
-            StopCoroutine(_changeValue);
-        _changeValue = StartCoroutine(ChangeHealth());
     }
 }
